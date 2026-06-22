@@ -29,8 +29,34 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
+
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, async () => {
+
+app.get('/test-tm-raw', async (req, res) => {
+  const axios = require('axios')
+  try {
+    const response = await axios.get('https://app.ticketmaster.com/discovery/v2/events.json', {
+      params: {
+        keyword: 'Taylor Swift',
+        city: 'Los Angeles',
+        classificationName: 'music',
+        sort: 'date,asc',
+        size: 5,
+        apikey: process.env.TICKETMASTER_API_KEY
+      }
+    })
+    res.json(response.data)
+  } catch (err) {
+    res.json({ 
+      error: err.message, 
+      response: err.response?.data 
+    })
+  }
+})
+
+
+const server = app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`SUPABASE_URL: ${process.env.SUPABASE_URL?.slice(0, 40)}...`);
   try {
@@ -40,5 +66,14 @@ app.listen(PORT, async () => {
     console.log(`Supabase reachable — status ${res.status}`);
   } catch (err) {
     console.error(`Supabase unreachable: ${err.message}`);
+  }
+});
+
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`Port ${PORT} is already in use. Run: lsof -i :${PORT} | awk 'NR>1 {print $2}' | xargs kill -9`);
+    process.exit(1);
+  } else {
+    throw err;
   }
 });

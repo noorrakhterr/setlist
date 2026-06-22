@@ -19,7 +19,7 @@ async function getTopArtistsController(req, res) {
     const { data: userRow, error: userError } = await supabaseAdmin
       .from("users")
       .select("spotify_access_token")
-      .eq("id", userId)
+      .eq("spotify_id", userId)
       .single();
 
     if (userError || !userRow) {
@@ -69,7 +69,7 @@ async function getRecentlyPlayedController(req, res) {
     const { data: userRow, error: userError } = await supabaseAdmin
       .from("users")
       .select("spotify_access_token")
-      .eq("id", userId)
+      .eq("spotify_id", userId)
       .single();
 
     if (userError || !userRow) {
