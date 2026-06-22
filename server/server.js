@@ -1,5 +1,10 @@
 require("dotenv").config();
 
+// Trust the network's TLS inspection proxy in local dev.
+if (process.env.NODE_ENV !== "production") {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
 const express = require("express");
 const cors = require("cors");
 
@@ -25,6 +30,15 @@ app.get("/health", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`SUPABASE_URL: ${process.env.SUPABASE_URL?.slice(0, 40)}...`);
+  try {
+    const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/`, {
+      headers: { apikey: process.env.SUPABASE_SERVICE_KEY },
+    });
+    console.log(`Supabase reachable — status ${res.status}`);
+  } catch (err) {
+    console.error(`Supabase unreachable: ${err.message}`);
+  }
 });

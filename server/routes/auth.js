@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { login, callback, refreshToken } = require("../controllers/authController");
 
-router.get("/", (req, res) => {
-  res.json({ message: "route working" });
-});
+router.get("/login", login);
+router.get("/callback", callback);
+router.post("/refresh", refreshToken);
 
 module.exports = router;

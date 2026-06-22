@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Callback from "./pages/Callback";
 import Discover from "./pages/Discover";
@@ -16,25 +17,31 @@ export default function App() {
           <Route
             path="/discover"
             element={
-              <Layout>
-                <Discover />
-              </Layout>
+              <ProtectedRoute>
+                <Layout>
+                  <Discover />
+                </Layout>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/history"
             element={
-              <Layout>
-                <History />
-              </Layout>
+              <ProtectedRoute>
+                <Layout>
+                  <History />
+                </Layout>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/profile"
             element={
-              <Layout>
-                <Profile />
-              </Layout>
+              <ProtectedRoute>
+                <Layout>
+                  <Profile />
+                </Layout>
+              </ProtectedRoute>
             }
           />
         </Routes>
