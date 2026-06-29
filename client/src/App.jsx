@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -10,6 +11,10 @@ import Profile from "./pages/Profile";
 export default function App() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
+      <Toaster
+        position="bottom-right"
+        toastOptions={{ style: { background: "#18181b", color: "#fff", border: "1px solid #3f3f46" } }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
