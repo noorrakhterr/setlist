@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { getStats } = require("../controllers/profileController");
 
-router.get("/", (req, res) => {
-  res.json({ message: "route working" });
-});
+router.get("/stats", getStats);
 
 module.exports = router;
